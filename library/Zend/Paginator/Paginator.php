@@ -77,6 +77,15 @@ class Paginator implements \Countable, \IteratorAggregate
     protected static $_defaultItemCountPerPage = 10;
 
     /**
+     * Default number of local pages (i.e., the number of discretes
+     * page numbers that will be displayed, including the current
+     * page number)
+     *
+     * @var int
+     */
+    protected static $_defaultPageRange = 10;
+
+    /**
      * Scrolling style plugin loader
      *
      * @var ScrollingStyleBroker
@@ -91,7 +100,7 @@ class Paginator implements \Countable, \IteratorAggregate
     protected static $_cache;
 
     /**
-     * Enable or desable the cache by Zend_Paginator instance
+     * Enable or disable the cache by Zend_Paginator instance
      *
      * @var bool
      */
@@ -152,7 +161,7 @@ class Paginator implements \Countable, \IteratorAggregate
      *
      * @var integer
      */
-    protected $_pageRange = 10;
+    protected $_pageRange = null;
 
     /**
      * Pages
@@ -201,7 +210,8 @@ class Paginator implements \Countable, \IteratorAggregate
         }
 
         $broker  = self::getAdapterBroker();
-        $adapter = $broker->load($adapter, array($data));
+        $adapterClass = $broker->getClassLoader()->load($adapter);
+        $adapter = new $adapterClass($data);
         return new self($adapter);
     }
 
@@ -299,6 +309,26 @@ class Paginator implements \Countable, \IteratorAggregate
         self::$_defaultItemCountPerPage = (int) $count;
     }
 
+    /**
+     * Get the default page range
+     *
+     * @return int
+     */
+    public static function getDefaultPageRange()
+    {
+        return self::$_defaultPageRange;
+    }
+
+    /**
+     * Set the default page range
+     *
+     * @param int $count
+     */
+    public static function setDefaultPageRange($count)
+    {
+        self::$_defaultPageRange = (int) $count;
+    }
+    
     /**
      * Sets a cache object
      *
@@ -719,6 +749,10 @@ class Paginator implements \Countable, \IteratorAggregate
      */
     public function getPageRange()
     {
+        if (null === $this->_pageRange) {
+            $this->_pageRange = self::getDefaultPageRange();
+        }
+
         return $this->_pageRange;
     }
 
@@ -939,7 +973,7 @@ class Paginator implements \Countable, \IteratorAggregate
     protected function _getCacheInternalId()
     {
         return md5(serialize(array(
-            spl_object_hash($this->getAdapter()),
+            $this->getAdapter(),
             $this->getItemCountPerPage()
         )));
     }
