@@ -44,7 +44,7 @@ class ReturnTag extends Reflection\ReflectionDocblockTag
      * Constructor
      *
      * @param  string $tagDocblockLine
-     * @return Zend\Reflection\Docblock\Tag\Return
+     * @return Zend\Code\Reflection\Docblock\Tag\Return
      */
     public function __construct($tagDocblockLine)
     {
