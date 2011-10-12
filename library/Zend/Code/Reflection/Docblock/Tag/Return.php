@@ -44,11 +44,11 @@ class ReturnTag extends Reflection\ReflectionDocblockTag
      * Constructor
      *
      * @param  string $tagDocblockLine
-     * @return void
+     * @return Zend\Reflection\Docblock\Tag\Return
      */
     public function __construct($tagDocblockLine)
     {
-        if (!preg_match('#^@(\w+)\s+([\w|\\\]+)(?:\s+(.*))?#', $tagDocblockLine, $matches)) {
+        if (!preg_match('#^@(\w+)\s+([^\s]+)(?:\s+(.*))?#', $tagDocblockLine, $matches)) {
             throw new Exception\InvalidArgumentException('Provided docblock line is does not contain a valid tag');
         }
 

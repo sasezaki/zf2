@@ -54,7 +54,7 @@ class Param extends Reflection\ReflectionDocblockTag
     {
         $matches = array();
 
-        if (!preg_match('#^@(\w+)\s+([\w|\\\]+)(?:\s+(\$\S+))?(?:\s+(.*))?#s', $tagDocblockLine, $matches)) {
+        if (!preg_match('#^@(\w+)\s+([^\s]+)(?:\s+(\$\S+))?(?:\s+(.*))?#s', $tagDocblockLine, $matches)) {
             throw new Exception\InvalidArgumentException('Provided docblock line is does not contain a valid tag');
         }
 

@@ -161,8 +161,17 @@ class ReflectionDocblockTagTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Zend\Code\Reflection\Docblock', $paramTag->getType($trimOpt));
     }
     
-    
-    
+    /**
+     * @group ZF-8373
+     */
+    public function testArrayNotationInParam()
+    {
+        $targetLine = '@param string[] $foo An array of strings';
+        $param = new Reflection\Docblock\Tag\Param($targetLine);
+        $this->assertEquals('string[]', $param->getType());
+        $this->assertEquals('$foo', $param->getVariableName());
+        $this->assertEquals('An array of strings', $param->getDescription());
+    }
 }
 
 
