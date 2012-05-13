@@ -69,6 +69,9 @@ class Client extends HttpClient
      */
     public function __construct($oauthOptions, $uri = null, $config = null)
     {
+        if (!isset($config['rfc3986strict'])) {
+            $config['rfc3986strict'] = true;
+        }
         parent::__construct($uri, $config);
         $this->_config = new Config\StandardConfig;
         if ($oauthOptions !== null) {
