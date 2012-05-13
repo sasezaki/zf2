@@ -262,7 +262,7 @@ class Client extends HttpClient
                 foreach ($queryParts as $queryPart) {
                     $kvTuple = explode('=', $queryPart);
                     $params[$kvTuple[0]] =
-                        (array_key_exists(1, $kvTuple) ? $kvTuple[1] : NULL);
+                        (array_key_exists(1, $kvTuple) ? urldecode($kvTuple[1]) : NULL);
                 }
             }
             if (!empty($this->paramsPost)) {
